@@ -1,7 +1,8 @@
 from gpiozero import DistanceSensor 
 from gpiozero import Servo
 from datetime import datetime
-
+import blynklib
+BLYNK_AUTH = "CpYEPIeI5E7quu9_CuVJlcsoXdOmcblI"
 def getTime():
     minutes = float(str(datetime.now().time()).split(':')[1])
     seconds = float(str(datetime.now().time()).split(':')[2])
