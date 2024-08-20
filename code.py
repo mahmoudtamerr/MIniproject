@@ -2,7 +2,33 @@ from gpiozero import DistanceSensor
 from gpiozero import Servo
 from datetime import datetime
 import blynklib
-BLYNK_AUTH = "CpYEPIeI5E7quu9_CuVJlcsoXdOmcblI"
+BLYNK_AUTH = "CpYEPIeI5E7quu9_CuVJlcsoXdOmcblI" 
+blynk = BlynkLib.Blynk(BLYNK_AUTH)
+blynk = BlynkLib.Blynk(BLYNK_AUTH)
+
+SERVO_PIN = 18
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(SERVO_PIN, GPIO.OUT)
+
+servo = GPIO.PWM(SERVO_PIN, 50)  
+servo.start(0)
+
+def set_servo_angle(angle):
+    duty = angle / 18 + 2
+    GPIO.output(SERVO_PIN, True)
+    servo.ChangeDutyCycle(duty)
+    time.sleep(1)
+    GPIO.output(SERVO_PIN, False)
+    servo.ChangeDutyCycle(0)
+
+@blynk.VIRTUAL_WRITE(1)
+def v1_write_handler(value):
+    command = int(value[0]) 
+    if command == 0:
+        set_servo_angle(0)  
+    elif command == 1:
+        set_servo_angle(180)
 def getTime():
     minutes = float(str(datetime.now().time()).split(':')[1])
     seconds = float(str(datetime.now().time()).split(':')[2])
